@@ -1,0 +1,93 @@
+﻿@model ExpensesMgmtWeb.Models.PurchaseWithProducts
+
+@if ((bool)ViewData["showGeneralPurchData"])
+{
+    <div class="my-2 text-center">
+        <span class="mr-3"> 
+            <b>@Html.DisplayNameFor(model => model.Purchase.Name): </b>@Html.DisplayFor(model => model.Purchase.Name) 
+        </span>
+
+        <span class="mr-3"> 
+            <b>@Html.DisplayNameFor(model => model.Purchase.Date): </b>@Html.DisplayFor(model => model.Purchase.Date)
+        </span>
+
+        <span class="mr-3">
+            <b>@Html.DisplayNameFor(model => model.Purchase.Tax): </b> @Html.DisplayFor(model => model.Purchase.Tax)
+        </span>
+        <span class="mr-3">
+            <b>@Html.DisplayNameFor(model => model.Purchase.Store): </b> @Html.DisplayFor(model => model.Purchase.StoreId) - @Html.DisplayFor(model => model.Purchase.Store.Name)
+        </span>
+    </div>
+}
+
+<table class="customized_table table table-hover border @( ((bool)ViewData["showActions"] && Model.PurchasedProducts.Count > 0) ? "" : "four_col")" />
+
+<thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PurchasedProducts.First().Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PurchasedProducts.First().Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PurchasedProducts.First().MeasureUnit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PurchasedProducts.First().Quantity)
+        </th>
+
+        @if ((bool)ViewData["showActions"] && Model.PurchasedProducts.Count > 0)
+        {
+            <th></th>
+        }
+    </tr>
+</thead>
+<tbody>
+
+    @if (Model.PurchasedProducts.Count == 0)
+    {
+        <tr>
+            <td class="border-top-0 w-100">
+                <p class="font-italic">There are no products.</p>
+            </td>
+        </tr>
+    }
+    else
+    {
+        @foreach (var item in Model.PurchasedProducts)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MeasureUnit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+
+                @if ((bool)ViewData["showActions"] && Model.PurchasedProducts.Count > 0)
+                {
+                    <td>
+                        <form id="delForm-@item.Id" asp-action="Delete" asp-route-Id="@item.Id" onsubmit="return deleteConfirmation()">
+                            <a asp-controller="PurchasedProducts" asp-action="edit" asp-route-id="@item.Id"><i class="material-icons text-info">edit</i></a>
+                            <a href="#" onclick="$('#delForm-@item.Id').submit()"><i class="material-icons text-info">delete</i></a>
+                        </form>
+                    </td>
+                }
+            </tr>
+        }
+    }
+</tbody>
+</table>
+
+<script>
+    function deleteConfirmation() {
+        return confirm("Are you sure you want to delete the product?");
+    }
+</script>

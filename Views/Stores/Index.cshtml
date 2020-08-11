@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ExpensesMgmtWeb.Models.Store>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+    <div class="container border pb-3 mt-2">
+        <a asp-action="Create"><i class="material-icons text-info">add</i></a>
+
+        <table class="customized_table store_table table table-hover border">
+            <thead>
+                <tr class="shadow">
+                    <th class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th class="col-sm-6">
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>
+                    <th class="col-sm-3"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td class="col-sm-3">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td class="col-sm-6">
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td class="col-sm-3">
+                        <form id="storeDelForm-@item.Id" asp-action="delete" asp-route-id="@item.Id" onsubmit="return deleteConfirmation(@item.Purchases.Count);">
+                            <a asp-action="edit" asp-route-id="@item.Id"><i class="material-icons text-info">edit</i></a>
+                            <a href="#" onclick="$('#storeDelForm-@item.Id').submit()"><i class="material-icons text-info">delete</i></a>
+                        </form>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+<script>
+    function deleteConfirmation(pNumber) {
+        if (pNumber == 0) {
+            return confirm("Are you sure you want to delete the store?");
+        }
+
+        alert(`The store has associated purchases, so you can't delete it.`);
+        return false;
+       
+    }
+</script>

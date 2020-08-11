@@ -1,0 +1,95 @@
+﻿@model IEnumerable<ExpensesMgmtWeb.Models.Purchase>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+    <div class="container border pb-3 mt-2">
+        <a asp-action="Create" title="New purchase"><i class="material-icons text-info">add</i></a>
+
+        <table class="customized_table table table-hover border @((Model.Count() > 0) ? "" : "four_col")">
+            <thead>
+                <tr class="shadow">
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Date)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Tax)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Store)
+                    </th>
+                    @if (Model.Count() > 0)
+                    {
+                        <th></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() == 0)
+                {
+                    <tr>
+                        <td class="border-top-0 w-100"> 
+                            <p class="font-italic">There are no purchases.</p>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Tax)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Store.Id) - @Html.DisplayFor(modelItem => item.Store.Name)
+                            </td>
+                            @if (Model.Count() > 0)
+                            { 
+                                <td>
+                                    <a asp-action="edit" asp-route-id="@item.Id"><i class="material-icons text-info">edit</i></a>
+                                    <a asp-action="details" asp-route-id="@item.Id"><i class="material-icons text-info">remove_red_eye</i></a>
+                                    <a asp-action="delete" asp-route-id="@item.Id"><i class="material-icons text-info">delete</i></a>
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+@*<script>
+
+    function onClickInput(element) {
+        console.log("YESS!!! " + element.getAttribute("name"));
+
+        checkedInputs = $("input:checked").length;
+        if (checkedInputs == 1) {
+            showPopUp(true);
+        } else if (checkedInputs > 1) {
+            showPopUp(false);
+        }
+    }
+
+    function showPopUp(isOne) {
+        if (isOne) {
+            console.log(isOne);
+        } else {
+            console.log(isOne);
+        }
+    }
+
+    /*$.map(document.querySelectorAll("input"), function (elem) { elem.onclick = availableOperations;});
+    $("input").click(availableOperations);*/
+</script>*@

@@ -1,0 +1,16 @@
+﻿@model ExpensesMgmtWeb.Models.PurchaseWithProducts
+
+    @{
+        ViewData["Title"] = "Details";
+
+        ViewData["showGeneralPurchData"] = true;
+        ViewData["showActions"] = false;
+    }
+
+    <div class="container border my-2">
+        @await Html.PartialAsync("_PurchaseWithProductsDetails", Model, ViewData)
+
+        <form class="my-2" asp-action="Index">
+            <button type="submit" class="btn bg-info text-white">OK</button>
+        </form>
+    </div>

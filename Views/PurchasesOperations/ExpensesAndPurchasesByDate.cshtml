@@ -1,0 +1,158 @@
+﻿@model ExpensesMgmtWeb.Models.ChartData
+
+@{
+    ViewData["Title"] = "Operations";
+}
+
+<div class="container my-2 py-2 border site-box">
+    <form id="chartInputData" asp-action="ExpensesAndPurchasesByDate">
+        <div class="form-row">
+            <div class="form-group col-3 mr-5">
+                <label asp-for="DateFrom" class="col-form-label"></label>
+                <div id="datetimepicker1" class="input-group date" data-target-input="nearest">
+                    <input asp-for="DateFrom" class="form-control datetimepicker-input" data-target="#datetimepicker1" type="text" />
+                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+                <span asp-validation-for="DateFrom" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-3">
+                <label asp-for="DateTo" class="col-form-label"></label>
+                <div id="datetimepicker2" class="input-group date" data-target-input="nearest">
+                    <input asp-for="DateTo" class="form-control datetimepicker-input" data-target="#datetimepicker2" type="text" />
+                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+                <span asp-validation-for="DateTo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="site-ok-box">
+            <button class="btn bg-info text-white">OK</button>
+        </div>
+    </form>
+</div>
+
+<div id="canvasParent" class="container border my-4 py-2 site-box">
+    <canvas id="canvasContainer"></canvas>
+</div>
+
+<script>
+    $(function () {
+        $('#datetimepicker1, #datetimepicker2').datetimepicker({
+            format: 'MM/DD/YYYY'
+        });
+    })
+</script>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script>
+    var form = $('#chartInputData');
+
+    form.submit(function(event) {
+        if (form.valid()) {
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: form.serialize(),
+                dataType: 'json',
+                success: function (chartData) {
+                    var ctx = $('#canvasContainer');
+                    ctx.remove();
+
+                    ctx = $("<canvas id='canvasContainer'></canvas>");
+
+                    var canvasParent = $('#canvasParent');
+                    canvasParent.append(ctx);
+
+                    if (chartData.data != null) {
+                        drawChart(chartData.data)
+                    } else {
+                        $("[data-valmsg-for=DateFrom]").text(chartData.inputDataErrors.DateFrom);
+                        $("[data-valmsg-for=DateTo]").text(chartData.inputDataErrors.DateTo);
+                    }
+                },
+                error: function (jqXmlHttpRequest) {
+                    if (jqXmlHttpRequest.status == 401) {
+                        window.location.replace(jqXmlHttpRequest.getResponseHeader("location"))
+                    } else {
+                        var ctx = $('#canvasContainer');
+                        ctx.remove();
+
+                        var canvasParent = $('#canvasParent');
+                        canvasParent.text('An error has occurred, please try again.');
+                        canvasParent.css('color', 'red');
+                    }
+                }
+            });
+        } else {
+            console.log("The are validation errors");
+        }
+        event.preventDefault();
+    })
+
+    function drawChart(data) {
+        var allDates = data.map(function (row) { return row.date });
+        var allExpenses = data.map(function (row) { return row.expenses });
+        var allPurchases = data.map(function (row) { return row.purchases });
+
+        var ctx = $('#canvasContainer');
+
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: allDates,
+                datasets: [{
+                    label: 'expenses',
+                    data: allExpenses,
+                    backgroundColor: [
+                        'rgba(255, 255, 255, 0)'
+                    ],
+                    borderColor: [
+                        'rgba(192, 0, 0, 1)'
+                    ],
+                    borderWidth: 1
+                },
+
+                {
+                    label: 'purchases',
+                    data: allPurchases,
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0)'
+                    ],
+                    borderColor: [
+                        'rgba(0, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'EXPENSES AND PURCHASES (BY DATE)',
+                    position: 'bottom',
+                    fontSize: 18,
+                    fontStyle: 'italic',
+                    fontColor: '#666'
+                },
+                legend: {
+                    position: 'right',
+                    align: 'start'
+                }
+            }
+        })
+    }
+</script>

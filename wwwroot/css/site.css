@@ -1,0 +1,127 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+/*.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}*/
+
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/*.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}*/
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .20) !important;
+}
+
+/*button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}*/
+
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {
+    height: 589px;
+}
+
+/* Set background color and 100% height */
+.sidenav {
+    padding-top: 20px;
+    background-color: #d5f7f7;
+    height: auto;
+}
+
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+    .sidenav {
+        height: auto;
+        padding: 15px;
+    }
+
+    .row.content {
+        height: auto;
+    }
+}
+
+.customized_table thead,
+.customized_table tbody,
+.customized_table tr {
+    display: block;
+}
+
+.customized_table tr:after,
+.customized_table tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+.customized_table th {
+    height: 40px;
+}
+
+.customized_table tbody {
+    height: 360px;
+    overflow-y: auto;
+}
+
+.customized_table {
+    margin: auto;
+    width: 90%;
+}
+
+.customized_table td, .customized_table th {
+    width: 20%;
+    float: left;
+}
+
+.customized_table.four_col th, .customized_table.four_col td {
+    width: 25%;
+}
+
+.customized_table.store_table th, .customized_table.store_table td {
+    width: 50%;
+}
+
+.customized_table thead tr {
+    background-color: #d5f7f7;
+}
+
+#loginDiv {
+    margin-top: 110px;
+}
+
+nav {
+    min-height: 56px;
+}
+
+.site-box {
+    min-height: 14rem;
+    position: relative;
+}
+
+.site-ok-box {
+    position: absolute;
+    bottom: .5rem;
+}

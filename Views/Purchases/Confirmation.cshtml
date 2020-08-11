@@ -1,0 +1,29 @@
+﻿@model ExpensesMgmtWeb.Models.PurchaseWithProducts
+
+@{
+    ViewData["Title"] = "Purchase Confirmation";
+}
+
+<div class="border my-2">
+    <ol class="font-italic" start="3">
+        <li>
+            <h6 class="mt-3">Confirm the purchase data:</h6>
+        </li>
+    </ol>
+</div>
+
+<div class="container border">
+    @{
+        ViewData["showGeneralPurchData"] = true;
+        ViewData["showActions"] = false;
+
+        await Html.RenderPartialAsync("_PurchaseWithProductsDetails", Model, ViewData);
+    }
+
+    <div class="my-2">
+        <form asp-action="Confirmation" asp-route-id="@Model.Purchase.Id">
+            <button asp-controller="PurchasedProducts" asp-action="Index" asp-route-id="@Model.Purchase.Id" class="btn bg-info text-white">Back</button>
+            <button type="submit" class="btn bg-info text-white">Confirm</button>
+        </form>
+    </div>
+</div>

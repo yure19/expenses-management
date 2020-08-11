@@ -1,0 +1,38 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div id="loginDiv" class="container py-2 col-5 rounded box-shadow">
+    <form id="account" method="post" asp-route-returnUrl="@Url.Action("CurrentYearExpensesByMonth", "purchasesOperations")">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group col-9">
+            <label asp-for="Input.Email" class="text-info"></label>
+            <input asp-for="Input.Email" class="form-control border-info" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-9">
+            <label asp-for="Input.Password" class="text-info"></label>
+            <input asp-for="Input.Password" class="form-control border-info" />
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-9">
+            <button type="submit" class="btn btn-info">Login</button>
+        </div>
+
+        <div class="form-group col-9">
+            <p>
+                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-info">Create New Account</a>
+            </p>
+        </div>
+    </form>
+ </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

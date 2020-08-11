@@ -1,0 +1,46 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ExpensesMgmtWeb.Areas.Identity.Data
+
+@inject SignInManager<ExpensesMgmtWebUser> SignInManager
+@inject UserManager<ExpensesMgmtWebUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a class="nav-link active pl-5" asp-controller="purchasesOperations" asp-action="CurrentYearExpensesByMonth">Home</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link text-white pl-3 dropdown-toggle" data-toggle="dropdown" href="#">Purchases</a>
+        <div class="dropdown-menu bg-info">
+            <a class="dropdown-item" asp-controller="purchases" asp-action="index">Manage purchases</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link text-white pl-3 dropdown-toggle" data-toggle="dropdown" href="#">Stores</a>
+        <div class="dropdown-menu bg-info">
+            <a class="dropdown-item" asp-controller="stores" asp-action="index">Manage stores</a>
+        </div>
+    </li>
+    <li class="nav-item dropdown flex-grow-1">
+        <a class="nav-link text-white pl-3 dropdown-toggle" data-toggle="dropdown" href="#">Operations</a>
+        <div class="dropdown-menu bg-info">
+            <a class="dropdown-item" asp-controller="purchasesOperations" asp-action="ExpensesAndPurchasesByDate">Expenses and purchases (by date)</a>
+            <a class="dropdown-item" asp-controller="purchasesOperations" asp-action="CurrentYearExpensesByMonth">Current year expenses (by month)</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a id="manage" class="nav-link text-white" href="#"> Hello <b>@UserManager.GetUserName(User)!</b> </a>
+    </li>
+    <li class="nav-item">
+        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Account/Login", values: new {area = "Identity"})">
+            <button id="logout" type="submit" class="nav-link btn btn-link text-white">Logout</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item flex-grow-1 text-right active">
+        <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        @*<a class="nav-link" id="login" asp-controller="Home" asp-action="Index">Home</a>*@
+    </li>
+}

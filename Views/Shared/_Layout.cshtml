@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - Expenses Management</title>
+
+        <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+        <link rel="stylesheet" href="~/css/site.css" />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+        <script type="text/javascript" src="~/lib/momentjs/moment.js"></script>
+
+        <script type="text/javascript" src="~/lib/bootstrap/plugin/bootstrap-4-5.1.2/build/js/tempusdominus-bootstrap-4.js"></script>
+        <link rel="stylesheet" href="~/lib/bootstrap/plugin/bootstrap-4-5.1.2/build/css/tempusdominus-bootstrap-4.css" />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+
+        <script src="~/lib/chartjs/chart.js"></script>
+
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-sm bg-info navbar-dark">
+                <ul class="navbar-nav flex-grow-1">
+                    <partial name="_LoginPartial" />
+                </ul>
+            </nav>
+        </header>
+
+        <div class="container-fluid text-left">
+            <div class="row content">
+                <div class="col-sm-2 sidenav"></div>
+
+                <div class="col-sm-8">
+                    <main role="main" class="pb-2">
+                        @RenderBody()
+                    </main>
+                </div>
+
+                <div class="col-sm-2 sidenav"></div>
+            </div>
+        </div>
+
+        <footer class="container-fluid text-center footer bg-info p-3 text-white">
+            &copy; 2020 - Expenses Management Web
+        </footer>
+
+        @RenderSection("Scripts", required: false)
+    </body>
+</html>
+
+<script>
+    $(window).on('resize', function () {
+        if (window.original_content_height === undefined) {
+            window.original_content_height = $('.row.content').height();
+        }
+
+        var win_height = $(window).height();
+        var html_height = $('html').height();
+        var content_height = $('.row.content').height();
+
+        var new_content_height;
+
+        //increase the content_height
+        if (win_height > html_height) {
+            new_content_height = content_height + (win_height - html_height);
+            $('.row.content').height(new_content_height);
+        }
+
+        //decrease the content_height, it'll always be >= than the original height
+        else if (win_height < html_height) {
+            new_content_height = content_height - (html_height - win_height)
+
+            if (new_content_height >= window.original_content_height) {
+                $('.row.content').height(new_content_height);
+            }                          
+        }
+    }).resize();
+</script>
