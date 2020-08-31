@@ -26,13 +26,17 @@ namespace ExpensesMgmtWeb.Controllers
         }
 
         // GET: Purchases
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            IQueryable<Purchase> currentUserPurchases = _context.Purchases
+            IQueryable<dynamic> purchasesWithTotal = _context.Purchases
                                               .Include(p => p.Store)
-                                              .Where(p => _userManager.GetUserId(User).Equals(p.UserId));
-
-            return View(await currentUserPurchases.ToListAsync());
+                                              .Where(p => _userManager.GetUserId(User).Equals(p.UserId))
+                                              .Select(p => new
+                                              {
+                                                  Purchase = p,
+                                                  Total = p.PurchasedProducts.Sum(pp => pp.Price * pp.Quantity) + p.Tax
+                                              });
+            return View(purchasesWithTotal);
         }
 
         // GET: Purchases/Details/5

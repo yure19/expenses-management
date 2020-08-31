@@ -1,95 +1,83 @@
-﻿@model IEnumerable<ExpensesMgmtWeb.Models.Purchase>
+﻿@model IQueryable<dynamic>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-    <div class="container border pb-3 mt-2">
-        <a asp-action="Create" title="New purchase"><i class="material-icons text-info">add</i></a>
+<div class="container border pb-3 mt-2">
+    <a asp-action="Create" title="New purchase"><i class="material-icons text-info">add</i></a>
 
-        <table class="customized_table table table-hover border @((Model.Count() > 0) ? "" : "four_col")">
-            <thead>
-                <tr class="shadow">
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Date)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Tax)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Store)
-                    </th>
-                    @if (Model.Count() > 0)
-                    {
-                        <th></th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Count() == 0)
+    <table class="customized_table table table-hover border @((Model.Count() > 0) ? "" : "four_col")">
+        <thead>
+            <tr class="shadow">
+                @{
+                    var name = Model.ElementType.GetProperty("Purchase").PropertyType.GetProperty("Name").Name;
+                    var date = Model.ElementType.GetProperty("Purchase").PropertyType.GetProperty("Date").Name;
+                    var store = Model.ElementType.GetProperty("Purchase").PropertyType.GetProperty("Store").Name;
+                    var total = Model.ElementType.GetProperty("Total").Name;
+                }
+                <th>
+                    @name
+                </th>
+                <th>
+                    @date
+                </th>
+                <th>
+                    @store
+                </th>
+                <th>
+                    @total
+                </th>
+                @if (Model.Count() > 0)
+                {
+                    <th></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count() > 0)
+            {
+                @foreach (var item in Model)
                 {
                     <tr>
-                        <td class="border-top-0 w-100"> 
-                            <p class="font-italic">There are no purchases.</p>
+                        @{
+                            name = item.GetType().GetProperty("Purchase").GetValue(item).Name;
+                            date = item.GetType().GetProperty("Purchase").GetValue(item).Date.ToString("MM/dd/yyyy HH:mm:ss");
+                            store = item.GetType().GetProperty("Purchase").GetValue(item).Store.Name;
+                            var totalValue = Math.Round(item.GetType().GetProperty("Total").GetValue(item), 2);
+                            var id = item.GetType().GetProperty("Purchase").GetValue(item).Id;
+                        }
+                        <td>
+                            @name
                         </td>
+                        <td>
+                            @date
+                        </td>
+                        <td>
+                            @store
+                        </td>
+                        <td>
+                            @totalValue
+                        </td>
+                        @if (Model.Count() > 0)
+                        {
+                            <td>
+                                <a asp-action="edit" asp-route-id="@id"><i class="material-icons text-info">edit</i></a>
+                                <a asp-action="details" asp-route-id="@id"><i class="material-icons text-info">remove_red_eye</i></a>
+                                <a asp-action="delete" asp-route-id="@id"><i class="material-icons text-info">delete</i></a>
+                            </td>
+                        }
                     </tr>
                 }
-                else
-                {
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Date)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Tax)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Store.Id) - @Html.DisplayFor(modelItem => item.Store.Name)
-                            </td>
-                            @if (Model.Count() > 0)
-                            { 
-                                <td>
-                                    <a asp-action="edit" asp-route-id="@item.Id"><i class="material-icons text-info">edit</i></a>
-                                    <a asp-action="details" asp-route-id="@item.Id"><i class="material-icons text-info">remove_red_eye</i></a>
-                                    <a asp-action="delete" asp-route-id="@item.Id"><i class="material-icons text-info">delete</i></a>
-                                </td>
-                            }
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>
-    </div>
-
-@*<script>
-
-    function onClickInput(element) {
-        console.log("YESS!!! " + element.getAttribute("name"));
-
-        checkedInputs = $("input:checked").length;
-        if (checkedInputs == 1) {
-            showPopUp(true);
-        } else if (checkedInputs > 1) {
-            showPopUp(false);
-        }
-    }
-
-    function showPopUp(isOne) {
-        if (isOne) {
-            console.log(isOne);
-        } else {
-            console.log(isOne);
-        }
-    }
-
-    /*$.map(document.querySelectorAll("input"), function (elem) { elem.onclick = availableOperations;});
-    $("input").click(availableOperations);*/
-</script>*@
+            }
+            else
+            {
+                <tr>
+                    <td class="border-top-0 w-100">
+                        <p class="font-italic">There are no purchases.</p>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
