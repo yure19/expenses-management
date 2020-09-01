@@ -69,8 +69,7 @@ namespace ExpensesMgmtWeb.Controllers
                                      select new
                                      {
                                          purchase.Date.Date,
-                                         Total = purchase.PurchasedProducts.Sum(purchasedProduct => purchasedProduct.Price) + 
-                                                    purchase.Tax
+                                         Total = purchase.PurchasedProducts.Sum(pp => pp.Price * pp.Quantity) + purchase.Tax
                                      };
 
             chartData.Data = purchasesWithTotal.AsEnumerable().
@@ -98,8 +97,7 @@ namespace ExpensesMgmtWeb.Controllers
                                      select new
                                      {
                                          purchase.Date.Month,
-                                         Total = purchase.PurchasedProducts.Sum(purchasedProduct => purchasedProduct.Price) +
-                                                    purchase.Tax
+                                         Total = purchase.PurchasedProducts.Sum(pp => pp.Price * pp.Quantity) + purchase.Tax
                                      };
 
             chartData.Data = purchasesWithTotal.AsEnumerable().

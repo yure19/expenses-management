@@ -17,11 +17,8 @@
         var canvasParent = $('#canvasParent');
         canvasParent.append(ctx);
 
-        var data = @Json.Serialize(Model.Data);
-        
-        if (data != null) {
-            drawChart(data);
-        }
+        var data = @Json.Serialize(Model.Data);        
+        drawChart(data);
     })
 
     function drawChart(data) {
