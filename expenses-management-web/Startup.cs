@@ -70,11 +70,6 @@ namespace ExpensesMgmtWeb
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
-
-            //services.AddControllers().AddNewtonsoftJson(options =>
-            //{
-            //    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
