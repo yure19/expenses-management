@@ -3,10 +3,8 @@ using ExpensesMgmtWeb.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Xunit.Abstractions;
 
-namespace expenses_management_test.UnitTests
+namespace expenses_management_test.XUnitTests
 {
     public class BaseControllerTests
     {
@@ -65,8 +63,20 @@ namespace expenses_management_test.UnitTests
                     UserId = null,
                     PurchasedProducts = purchasedProducts
                 };
-                
-                context.AddRange(purchase_1);
+
+                var purchase_2 = new Purchase
+                {
+                    Id = 2,
+                    Name = "Purch_Oct_2",
+                    Date = new DateTime(2020, 10, 27),
+                    Tax = 2,
+                    Confirmed = true,
+                    StoreId = 1,
+                    UserId = null,
+                    PurchasedProducts = purchasedProducts
+                };
+
+                context.AddRange(purchase_1, purchase_2);
                 context.SaveChanges();
             }
         }
